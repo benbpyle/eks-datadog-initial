@@ -1,0 +1,7 @@
+### GET HealthCheck
+GET http://localhost:3000/healthcheck
+
+###
+### GET Name (Main Route) x50
+GET http://localhost:3000/?name=Benjamen
+###

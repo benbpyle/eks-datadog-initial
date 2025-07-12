@@ -1,0 +1,44 @@
+apiVersion: "datadoghq.com/v2alpha1"
+kind: "DatadogAgent"
+metadata:
+  name: "datadog"
+spec:
+  global:
+    clusterName: "datadog-sandbox"
+    site: "us5.datadoghq.com"
+    tags:
+      - "env:dev"
+    credentials:
+      apiSecret:
+        secretName: "datadog-secret"
+        keyName: "api-key"
+  features:
+    logCollection:
+      enabled: true
+      containerCollectAll: true
+    apm:
+      enabled: true
+      hostPortConfig:
+        enabled: true
+        hostPort: 8126 # default      
+  override:
+    nodeAgent:
+      extraConfd:
+        configDataMap:    
+#          istio.yaml: |-
+#            ad_identifiers:
+#              - proxyv2
+#              - proxyv2-rhel8
+#
+#            init_config:
+#
+#            instances:
+#              - use_openmetrics: true
+#                send_histogram_buckets: false
+#                istio_mesh_endpoint: http://%%host%%:15020/stats/prometheus
+#                tag_by_endpoint: false
+
+    clusterAgent:
+      containers:
+        cluster-agent:
+          env:
