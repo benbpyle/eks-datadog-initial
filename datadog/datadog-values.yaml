@@ -12,23 +12,8 @@ datadog:
     enabled: true
   apm:
     portEnabled: true
-  ignoreAutoConfig:
-    - istio
 clusterAgent:
   configd:
-#    istio.yaml: |-
-#      ad_identifiers:
-#        - proxyv2
-#        - proxyv2-rhel8
-#
-#      init_config:
-#
-#      instances:
-#        - use_openmetrics: false
-#          send_histogram_buckets: false
-#          istio_mesh_endpoint: http://%%host%%:15020/stats/prometheus
-#          tag_by_endpoint: false
-
   env:
     - name: DD_KUBELET_TLS_VERIFY
       value: "false"

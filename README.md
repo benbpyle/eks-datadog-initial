@@ -147,8 +147,8 @@ eksctl delete cluster -f cluster/cluster-config.yaml
 
 ## License
 
-[Add your license information here]
+This project is licensed under the FreeBSD License - see the [LICENSE](LICENSE) file for details.
 
 ## Contributing
 
-[Add contribution guidelines here]
+We welcome community contributions and pull requests. 
