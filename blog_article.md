@@ -1,32 +1,21 @@
-Over the past few years I've spent a great deal of time writing
-and [building with Datadog](https://binaryheap.com/tag/datadog/). I find that their platform gives me as a builder the
-right insight and tools to diagnose things quickly, make adjustments when things
-run out of resources, and observe my software's behavior in test and at scale. During this past year or two, I've
-been expanding my skills into the Kubernetes ecosystem and was so pleased to find that my Datadog experience is valuable
-there as well. So, from Serverless to Kubernetes, Datadog has me covered. Let's explore what establishing Datadog
-on Kubernetes means for me as a developer.
+Over the past few years I've spent a great deal of time writing and [building with Datadog](https://binaryheap.com/tag/datadog/). I find that their platform gives me as a builder the right insight and tools to diagnose things quickly, make adjustments when things run out of resources, and observe my software's behavior in test and at scale. During this past year or two, I've been expanding my skills into the Kubernetes ecosystem and was so pleased to find that my Datadog experience is valuable there as well. So, from Serverless to Kubernetes, Datadog has me covered. Let's explore what establishing Datadog on Kubernetes means for me as a developer.
 
 ## Datadog on Kubernetes
 
-Let's start out by exploring what the ecosystem looks like when deploying Datadog on Kubernetes. The image below is
-from a wonderful article on the Datadog blog which shows that there are two agents I will be running.
+Let's start out by exploring what the ecosystem looks like when deploying Datadog on Kubernetes. The image below is from a wonderful article on the Datadog blog which shows that there are two agents I will be running.
 
 * Node Agent -- handles node level APM and metrics collection
-* Cluster Agent -- runs on a Node and deals with aggregating data from the various nodes to ship to the Datadog
-  platform
+* Cluster Agent -- runs on a Node and deals with aggregating data from the various nodes to ship to the Datadog platform
 
 ![Datadog on Kubernetes](images/dd_k8s.jpg)
 
-> Credit to Datadog on the above
-> image [from this blog article](https://www.datadoghq.com/blog/monitoring-kubernetes-with-datadog/)
+> Credit to Datadog on the above image [from this blog article](https://www.datadoghq.com/blog/monitoring-kubernetes-with-datadog/)
 
-For the balance of this article, I'm going to explore how to make this a reality on a fresh Kubernetes cluster
-hosted on AWS' EKS (Elastic Kubernetes Service)
+For the balance of this article, I'm going to explore how to make this a reality on a fresh Kubernetes cluster hosted on AWS' EKS (Elastic Kubernetes Service)
 
 ## Working through the Project
 
-If you want to follow along, the repository backing this article can be found
-at [this link to GitHub](https://github.com/benbpyle/eks-datadog-initial)
+If you want to follow along, the repository backing this article can be found at [this link to GitHub](https://github.com/benbpyle/eks-datadog-initial)
 
 ### Creating the Cluster
 
@@ -93,11 +82,7 @@ kubectl get pods -l app.kubernetes.io/name=datadog
 
 ### Deploying Applications
 
-As a part of this walkthrough, I'm going to deploy a couple of services so that I can show how Datadog blends
-Kubernetes with APM (Application Performance Monitoring) so easily. And of course, I'm going to use some code
-written in Rust, packaged with Docker, and hosted in AWS ECR (Elastic Container Registry). For this sample, I'll
-have "service-a" and "service-b". I'll make requests to "service-b" which will call "service-a" and those traces
-will be emitted via OpenTelemetry and shipped to Datadog via the node and cluster agent.
+As a part of this walkthrough, I'm going to deploy a couple of services so that I can show how Datadog blends Kubernetes with APM (Application Performance Monitoring) so easily. And of course, I'm going to use some code written in Rust, packaged with Docker, and hosted in AWS ECR (Elastic Container Registry). For this sample, I'll have "service-a" and "service-b". I'll make requests to "service-b" which will call "service-a" and those traces will be emitted via OpenTelemetry and shipped to Datadog via the node and cluster agent.
 
 ```yaml
 # create the namespace first
@@ -112,8 +97,7 @@ kubectl apply -f services/service-a.yaml
 kubectl apply -f services/service-b.yaml
 ```
 
-Before moving on to showing what this all produces, I need to point out how I'm connecting the services to Datadog
-via the node agent. This is a snippet from the service definition.
+Before moving on to showing what this all produces, I need to point out how I'm connecting the services to Datadog via the node agent. This is a snippet from the service definition.
 
 ```yaml
   env:
@@ -137,51 +121,35 @@ via the node agent. This is a snippet from the service definition.
 
 ## Putting the Pieces Together
 
-I find that the more I consume from the Datadog ecosystem the more value I find. I've done so much with Serverless,
-logs, APM, and databases, but being able to bring it all together to observe my infrastructure as well is just so
-powerful. I'm going to make a quick tour (as this is an introduction) through some of the parts I like and use the
-most. This isn't exhaustive, but it should be enough to get you going.
+I find that the more I consume from the Datadog ecosystem the more value I find. I've done so much with Serverless, logs, APM, and databases, but being able to bring it all together to observe my infrastructure as well is just so powerful. I'm going to make a quick tour (as this is an introduction) through some of the parts I like and use the most. This isn't exhaustive, but it should be enough to get you going.
 
 ### Cluster(s) Overview
 
-This initial view is just a nice overview of the cluster(s) that I'm managing. I can jump into specifics by clicking
-on any one of those tiles, but on the surface it's just a great top-level visual. You can see at this point, I've
-just got the one cluster, and the other tiles are representing the items/resources we've deployed together in this
-article.
+This initial view is just a nice overview of the cluster(s) that I'm managing. I can jump into specifics by clicking on any one of those tiles, but on the surface it's just a great top-level visual. You can see at this point, I've just got the one cluster, and the other tiles are representing the items/resources we've deployed together in this article.
 
 ![Cluster Overview](./images/cluster_overview.jpg)
 
-Once I drill into any of those, the navigation options open up tremendously. All of these options can be scoped by
-any tag that I've create, labels defined in Kubernetes, or the DD_ENV (Datadog environment) that I've scoped my
-resources down to.
+Once I drill into any of those, the navigation options open up tremendously. All of these options can be scoped by any tag that I've create, labels defined in Kubernetes, or the DD_ENV (Datadog environment) that I've scoped my resources down to.
 
 ![Navigation](./images/navigation.jpg)
 
 ### Nodes, Deployments, Containers, and Processes
 
-Diving deeper, I can drill as far down the rabbit hole as I'd like. Starting out with nodes, I can see all of my nodes
-in whatever state they are in, including all the various elements that make them unique. IP address, chip
-architecture, and so on and so forth.
+Diving deeper, I can drill as far down the rabbit hole as I'd like. Starting out with nodes, I can see all of my nodes in whatever state they are in, including all the various elements that make them unique. IP address, chip architecture, and so on and so forth.
 
 ![Nodes](./images/node_view.jpg)
 
-Diving further, my Deployments are also exposed via Datadog. If I have two nodes running, I've got some number of pods
-using the resources I have deployed up to this point. I could further view these by pod or if I'd deployed as
-ReplicaSets or StatefulSets, they'd be exposed that way too.
+Diving further, my Deployments are also exposed via Datadog. If I have two nodes running, I've got some number of pods using the resources I have deployed up to this point. I could further view these by pod or if I'd deployed as ReplicaSets or StatefulSets, they'd be exposed that way too.
 
 ![Deployments](./images/pods_view.jpg)
 
-The last level of depth is the actual process itself. I find this pretty fascinating as I can explore the physical
-process and the user that's running the process. Datadog gives me that which I find incredibly powerful.
+The last level of depth is the actual process itself. I find this pretty fascinating as I can explore the physical process and the user that's running the process. Datadog gives me that which I find incredibly powerful.
 
 ![Process](./images/process_view.jpg)
 
 ### Traces
 
-As a long time Datadog user, traces are where I've spent most of my time. Traces in containers. Traces in Lambda
-Functions. Traces between Functions and Containers. What I really enjoy is that I can see the traces on the
-individual node, deployment, container, or process just like I showed up above. I don't need to visit the specific
-APM section of the Datadog UI, it's just right there for me to access.
+As a long time Datadog user, traces are where I've spent most of my time. Traces in containers. Traces in Lambda Functions. Traces between Functions and Containers. What I really enjoy is that I can see the traces on the individual node, deployment, container, or process just like I showed up above. I don't need to visit the specific APM section of the Datadog UI, it's just right there for me to access.
 
 ![Traces](./images/traces.jpg)
 
