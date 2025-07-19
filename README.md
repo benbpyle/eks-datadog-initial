@@ -2,6 +2,8 @@
 
 This repository contains configuration for setting up an Amazon EKS (Elastic Kubernetes Service) cluster with Datadog monitoring integration and deploying Rust-based microservices.
 
+This repository supports the blog article: [Establishing Datadog on Kubernetes](https://binaryheap.com/establishing-datadog-on-kubernetes/)
+
 ## Overview
 
 The project provides a simple configuration for creating and managing an EKS cluster on AWS. The cluster is configured with ARM-based instances for better performance and cost efficiency. It includes Datadog for monitoring and two Rust microservices that demonstrate distributed tracing.

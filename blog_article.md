@@ -36,15 +36,13 @@ managedNodeGroups:
     desiredCapacity: 2
 ```
 
-This file sets up an EKS cluster running 2 nodes running AWS' Graviton processors. I just like running Graviton
-over x86. Better, cheaper, faster, and all of that. These nodes and the cluster are in us-west-2. Basic setup.
+This file sets up an EKS cluster running 2 nodes running AWS' Graviton processors. I just like running Graviton over x86. Better, cheaper, faster, and all of that. These nodes and the cluster are in us-west-2. Basic setup.
 
 ```bash
 eksctl create cluster -f cluster/cluster-config.yaml
 ```
 
-Give this a little bit of time to run. There's a CloudFormation stack that'll be generated and execute in your AWS
-account. Once finished, updated your kubectl and check the status of the nodes.
+Give this a little bit of time to run. There's a CloudFormation stack that'll be generated and execute in your AWS account. Once finished, updated your kubectl and check the status of the nodes.
 
 ```bash
 aws eks update-kubeconfig --name sandbox --region us-west-2
@@ -53,14 +51,11 @@ kubectl get nodes
 
 ### Installing Datadog
 
-There are a couple of ways to install Datadog into a Kubernetes cluster. The approach I like to take is to use [Helm]
-(https://helm.sh/). With Helm, I can keep all of my values for the Datadog agents in the proper area and update my
-releases as needed. I find the Helm values file looks pretty close to an agent configuration file.
+There are a couple of ways to install Datadog into a Kubernetes cluster. The approach I like to take is to use [Helm](https://helm.sh/). With Helm, I can keep all of my values for the Datadog agents in the proper area and update my releases as needed. I find the Helm values file looks pretty close to an agent configuration file.
 
 ### Configure Datadog Secret
 
-The agent can access the secrets store for things like the API Key which needs to stay private. My first order for
-configuration is to get the secret loaded up.
+The agent can access the secrets store for things like the API Key which needs to stay private. My first order for configuration is to get the secret loaded up.
 
 ```bash
 kubectl create secret generic datadog-secret --from-literal api-key=<YOUR_DATADOG_API_KEY>
@@ -68,8 +63,7 @@ kubectl create secret generic datadog-secret --from-literal api-key=<YOUR_DATADO
 
 ### Working with Helm
 
-Installing Datadog with Helm is quite easy. I need to add the repository that Datadog is stored in and then run the
-installation. I can also verify that everything looks good.
+Installing Datadog with Helm is quite easy. I need to add the repository that Datadog is stored in and then run the installation. I can also verify that everything looks good.
 
 ```yaml
 helm repo add datadog https://helm.datadoghq.com
@@ -155,27 +149,16 @@ As a long time Datadog user, traces are where I've spent most of my time. Traces
 
 ## Wrapping Up
 
-From this point, there are so many places to jump off and explore, but you should have a working Kubernetes cluster
-running on EKS with Datadog correctly installed. If at this point, you've gone as far as you want, and choose to
-cleanup your resources, here's how you delete the cluster.
+From this point, there are so many places to jump off and explore, but you should have a working Kubernetes cluster running on EKS with Datadog correctly installed. If at this point, you've gone as far as you want, and choose to cleanup your resources, here's how you delete the cluster.
 
 ```bash
 eksctl delete cluster -f cluster/cluster-config.yaml
 ```
 
-However, should you want to continue, I encourage you to explore this expansive documentation
-at [Datadog](https://docs.datadoghq.com/containers/kubernetes/) in relation to Kubernetes. There's so much to dive into
-and
-stay tuned, as I'll have more walkthroughs and opinions in the future as well.
+However, should you want to continue, I encourage you to explore this expansive documentation at [Datadog](https://docs.datadoghq.com/containers/kubernetes/) in relation to Kubernetes. There's so much to dive into and stay tuned, as I'll have more walkthroughs and opinions in the future as well.
 
-At the beginning of this article, I linked out to the GitHub repository. In case you missed
-it, [here it is again](https://github.com/benbpyle/eks-datadog-initial). I encourage you to run through this in your own
-environment as
-it'll help the information stick.
+At the beginning of this article, I linked out to the GitHub repository. In case you missed it, [here it is again](https://github.com/benbpyle/eks-datadog-initial). I encourage you to run through this in your own environment as it'll help the information stick.
 
-My wrap-up thoughts on all of this can simply be summed up as this. Do not build distributed and cloud native
-software without a solid plan for observability. It is not a smart strategy to try and "add as you go". Do it
-right from the start and you won't regret it. And when it comes to tooling around observability, Datadog is the top
-of the stack. Use it. Learn it. And you won't regret it.
+My wrap-up thoughts on all of this can simply be summed up as this. Do not build distributed and cloud native software without a solid plan for observability. It is not a smart strategy to try and "add as you go". Do it right from the start and you won't regret it. And when it comes to tooling around observability, Datadog is the top of the stack. Use it. Learn it. And you won't regret it.
 
 Thanks for reading and happy building!
